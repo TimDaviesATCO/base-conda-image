@@ -1,0 +1,15 @@
+options:
+  docker: true
+  max-time: 15  # minutes - max time for a build step
+
+pipelines:
+  default:
+    - step:
+        name: "Build and push to docker registry"
+        caches:
+          - docker
+        script:
+          # Build and push container
+          - docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD}
+          - docker build -t ${DOCKER_HUB_USER}/conda:latest .
+          - docker push ${DOCKER_HUB_USER}/conda:latest
